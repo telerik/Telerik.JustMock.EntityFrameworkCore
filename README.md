@@ -5,7 +5,7 @@ In-memory mock DbSet and DbContext mocking amenities for JustMock.
 
 Getting Started
 ===============
-Install the package from NuGet: https://www.nuget.org/packages/JustMock.EntityFramework
+Install the package from NuGet: https://www.nuget.org/packages/JustMock.EntityFrameworkCore
 
 Mocking DbContext
 =================
