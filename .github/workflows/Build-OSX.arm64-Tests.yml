@@ -25,13 +25,13 @@ jobs:
 
     - name: Build
       run: |
-          dotnet build -c Release
+          dotnet build -c Release -f net7.0
       shell: bash
 
     - name: Run tests
       if: ${{ !inputs.skip-tests }}
       run: |
-          dotnet test --no-build --no-restore -c Release -l trx
+          dotnet test --no-build --no-restore -c Release -f net7.0 -l trx
       shell: bash
 
     - name: Publish test results

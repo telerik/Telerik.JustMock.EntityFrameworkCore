@@ -249,6 +249,9 @@ namespace Telerik.JustMock.EntityFrameworkCore.Tests
 		}
 
 		[TestMethod]
+#if NET7_0_OR_GREATER
+        [ExpectedException(typeof(NotSupportedException))]
+#endif
 		public void Local_ImplicitBackingCollection_ChangesAreObserved()
 		{
 			var ctx = Mock.Create<TheDbContext>().PrepareMock();
@@ -263,7 +266,10 @@ namespace Telerik.JustMock.EntityFrameworkCore.Tests
         }
 
 		[TestMethod]
-		public void Local_ExplicitBackingCollection_ChangesAreObserved()
+#if NET7_0_OR_GREATER
+        [ExpectedException(typeof(NotSupportedException))]
+#endif
+        public void Local_ExplicitBackingCollection_ChangesAreObserved()
 		{
 			var ctx = Mock.Create<TheDbContext>().PrepareMock();
 			var list = new ObservableCollection<Person>

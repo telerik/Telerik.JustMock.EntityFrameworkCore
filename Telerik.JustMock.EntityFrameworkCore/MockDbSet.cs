@@ -195,6 +195,7 @@ namespace Telerik.JustMock.EntityFrameworkCore
             get { return Mock.Create<IEntityType>(); }
         }
 
+#if NET6_0
         public override LocalView<TEntity> Local
 		{
 			get 
@@ -204,6 +205,7 @@ namespace Telerik.JustMock.EntityFrameworkCore
 				return mockLocalView;
 			}
 		}
+#endif
 
         public virtual IEnumerator<TEntity> GetEnumerator()
 		{
