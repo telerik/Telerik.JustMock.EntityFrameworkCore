@@ -14,7 +14,7 @@ on:
 jobs:
 
    build-arm64-and-test:
-    runs-on: [self-hosted, macos, arm64, justmock]
+    runs-on: macos-14
     steps:
 
     - name: Checkout
