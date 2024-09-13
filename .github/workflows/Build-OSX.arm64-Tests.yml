@@ -1,0 +1,50 @@
+name: "Build and test macOS arm64"
+
+on:
+  workflow_call:
+    inputs:
+      build-number:
+        required: true
+        type: string
+      skip-tests:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+
+   build-arm64-and-test:
+    runs-on: [self-hosted, macos, arm64, justmock]
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: Build
+      run: |
+          dotnet build -c Release
+      shell: bash
+
+    - name: Run tests
+      if: ${{ !inputs.skip-tests }}
+      run: |
+          dotnet test --no-build --no-restore -c Release -l trx
+      shell: bash
+
+    - name: Publish test results
+      uses: dorny/test-reporter@v1
+      if: ${{ (success() || failure()) && !inputs.skip-tests }}
+      with:
+          name: "OSX arm64 Tests Release"
+          path: ./**/TestResults/*.trx
+          reporter: dotnet-trx
+
+    - name: Cleanup test results
+      if: ${{ always() && !inputs.skip-tests }}
+      run: |
+          find . -type f -name '*.trx' -delete
+      shell: bash
+
