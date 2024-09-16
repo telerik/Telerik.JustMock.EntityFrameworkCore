@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace Telerik.JustMock.EntityFrameworkCore
 {
     internal class TestDbAsyncQueryProvider<TEntity> : IAsyncQueryProvider
-	{
-		private readonly IQueryProvider _inner;
+    {
+        private readonly IQueryProvider _inner;
 
-		public TestDbAsyncQueryProvider(IQueryProvider inner)
-		{
-			_inner = inner;
-		}
+        public TestDbAsyncQueryProvider(IQueryProvider inner)
+        {
+            _inner = inner;
+        }
 
         public IQueryable CreateQuery(Expression expression)
         {
