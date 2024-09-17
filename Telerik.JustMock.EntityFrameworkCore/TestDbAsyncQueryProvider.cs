@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -6,38 +7,35 @@ using System.Threading.Tasks;
 
 namespace Telerik.JustMock.EntityFrameworkCore
 {
-    internal class TestDbAsyncQueryProvider<TEntity> : IAsyncQueryProvider
+    internal class TestDbAsyncQueryProvider<TEntity> : TestQueryProvider<TEntity>, IAsyncEnumerable<TEntity>, IAsyncQueryProvider
     {
-        private readonly IQueryProvider _inner;
-
-        public TestDbAsyncQueryProvider(IQueryProvider inner)
+        public TestDbAsyncQueryProvider(Expression expression)
+            : base(expression)
         {
-            _inner = inner;
         }
 
-        public IQueryable CreateQuery(Expression expression)
+        public TestDbAsyncQueryProvider(IEnumerable<TEntity> enumerable)
+            : base(enumerable)
         {
-            return new TestDbAsyncEnumerable<TEntity>(expression);
         }
 
-        public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
+        public TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken)
         {
-            return new TestDbAsyncEnumerable<TElement>(expression);
+            var expectedResultType = typeof(TResult).GetGenericArguments()[0];
+            var executionResult = typeof(IQueryProvider)
+                .GetMethods()
+                .Single(method => method.Name == nameof(IQueryProvider.Execute) && method.IsGenericMethod)
+                .MakeGenericMethod(expectedResultType)
+                .Invoke(this, new object[] { expression });
+
+            return (TResult)typeof(Task).GetMethod(nameof(Task.FromResult))
+                .MakeGenericMethod(expectedResultType)
+                .Invoke(null, new[] { executionResult });
         }
 
-        public object Execute(Expression expression)
+        public IAsyncEnumerator<TEntity> GetAsyncEnumerator(CancellationToken cancellationToken = default)
         {
-            return _inner.Execute(expression);
-        }
-
-        public TResult Execute<TResult>(Expression expression)
-        {
-            return _inner.Execute<TResult>(expression);
-        }
-
-        public TResult ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult(Execute<TResult>(expression)).GetAwaiter().GetResult();
+            return new TestDbAsyncEnumerator<TEntity>(this.AsEnumerable().GetEnumerator());
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Telerik.JustMock.EntityFrameworkCore
 
         IQueryProvider IQueryable.Provider
         {
-            get { return new TestDbAsyncQueryProvider<T>(this); }
+            get { return new TestDbAsyncQueryProvider<T>(this.AsEnumerable()); }
         }
     }
 

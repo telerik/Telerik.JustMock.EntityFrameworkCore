@@ -304,5 +304,22 @@ namespace Telerik.JustMock.EntityFrameworkCore.Tests
 
             Assert.AreEqual(2, xes.Count);
         }
+
+        [TestMethod]
+        public async Task Queries_AsyncProviderIsSupported()
+        {
+            var ctx = Mock.Create<TheDbContext>().PrepareMock();
+            var list = new List<Person>
+            {
+                new Person { Id = 1, Name = "x" },
+                new Person { Id = 2, Name = "x" },
+                new Person { Id = 3, Name = "y" }
+            };
+            ctx.People.Bind(list);
+
+            var res = await ctx.People.SingleAsync(x => x.Id == 1);
+
+            Assert.IsNotNull(res);
+        }
     }
 }

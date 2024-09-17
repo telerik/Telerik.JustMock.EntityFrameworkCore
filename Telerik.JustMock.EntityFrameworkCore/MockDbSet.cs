@@ -187,7 +187,7 @@ namespace Telerik.JustMock.EntityFrameworkCore
 
         public virtual IQueryProvider Provider
         {
-            get { return new TestDbAsyncQueryProvider<TEntity>(this.asQueryable.Provider); }
+            get { return new TestDbAsyncQueryProvider<TEntity>(this.asQueryable.Expression); }
         }
 
         public override IEntityType EntityType
