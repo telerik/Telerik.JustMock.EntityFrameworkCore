@@ -22,14 +22,36 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
 
     <dependencies>
-      <dependency id="JustMock" version="2014.1.1424.1" />
+
+      <group targetFramework="net6.0">
+        <dependency id="Microsoft.EntityFrameworkCore" version="6.0.33" />
+      </group>
+
+      <group targetFramework="net7.0">
+        <dependency id="Microsoft.EntityFrameworkCore" version="7.0.20" />
+      </group>
+
+      <group targetFramework="net8.0">
+        <dependency id="Microsoft.EntityFrameworkCore" version="8.0.8" />
+      </group>
+
+      <dependency id="JustMock" version="2024.3.805.336" />
+
     </dependencies>
 
   </metadata>
 
   <files>
+
     <file src="Telerik.JustMock.EntityFrameworkCore\bin\Release\net6.0\Telerik.JustMock.EntityFrameworkCore.dll" target="lib/net6.0"/>
     <file src="Telerik.JustMock.EntityFrameworkCore\bin\Release\net6.0\Telerik.JustMock.EntityFrameworkCore.xml" target="lib/net6.0"/>
+
+    <file src="Telerik.JustMock.EntityFrameworkCore\bin\Release\net7.0\Telerik.JustMock.EntityFrameworkCore.dll" target="lib/net7.0"/>
+    <file src="Telerik.JustMock.EntityFrameworkCore\bin\Release\net7.0\Telerik.JustMock.EntityFrameworkCore.xml" target="lib/net7.0"/>
+    
+    <file src="Telerik.JustMock.EntityFrameworkCore\bin\Release\net8.0\Telerik.JustMock.EntityFrameworkCore.dll" target="lib/net8.0"/>
+    <file src="Telerik.JustMock.EntityFrameworkCore\bin\Release\net8.0\Telerik.JustMock.EntityFrameworkCore.xml" target="lib/net8.0"/>
+
   </files>
 
 </package>

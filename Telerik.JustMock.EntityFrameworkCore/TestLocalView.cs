@@ -28,7 +28,11 @@ namespace Telerik.JustMock.EntityFrameworkCore
             get { return false; }
         }
 
+#if NET6_0
         public override event NotifyCollectionChangedEventHandler CollectionChanged
+#elif NET7_0_OR_GREATER
+        public new event NotifyCollectionChangedEventHandler CollectionChanged
+#endif
         {
             add { this.Data.CollectionChanged += value; }
             remove { this.Data.CollectionChanged -= value; }

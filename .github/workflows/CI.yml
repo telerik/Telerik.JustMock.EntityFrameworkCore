@@ -1,0 +1,32 @@
+name: "CI"
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+
+   build-and-test-windows-x64:
+      uses: ./.github/workflows/Build-Windows.x64-Tests.yml
+      with:
+        build-number: ${{ github.run_number }}
+      secrets: inherit
+
+   build-and-test-linux-x64:
+      uses: ./.github/workflows/Build-Linux.x64-Tests.yml
+      with:
+        build-number: ${{ github.run_number }}
+      secrets: inherit
+
+   build-and-test-osx-x64:
+      uses: ./.github/workflows/Build-OSX.x64-Tests.yml
+      with:
+        build-number: ${{ github.run_number }}
+      secrets: inherit
+
+   build-and-test-osx-arm64:
+      uses: ./.github/workflows/Build-OSX.arm64-Tests.yml
+      with:
+        build-number: ${{ github.run_number }}
+      secrets: inherit
+

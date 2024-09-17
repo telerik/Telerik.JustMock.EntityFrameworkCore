@@ -1,0 +1,53 @@
+name: "Build and test Windows x64 .NET Core"
+
+on:
+  workflow_call:
+    inputs:
+      build-number:
+        required: true
+        type: string
+      skip-tests:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+
+   build-x64-and-test:
+    runs-on: windows-2022
+    permissions:
+      contents: write
+      checks: write # Required by dorny/test-reporter
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: Build
+      run: |
+          dotnet build -c Release
+      shell: cmd
+
+    - name: Run tests
+      if: ${{ !inputs.skip-tests }}
+      run: |
+          dotnet test --no-build --no-restore -c Release -l trx
+      shell: cmd
+
+    - name: Publish test results
+      uses: dorny/test-reporter@v1
+      if: ${{ (success() || failure()) && !inputs.skip-tests }}
+      with:
+          name: "Windows x64 Tests Release"
+          path: ./**/TestResults/*.trx
+          reporter: dotnet-trx
+
+    - name: Cleanup test results
+      if: ${{ always() }}
+      run: |
+          del /s /q *.trx
+      shell: cmd
+
