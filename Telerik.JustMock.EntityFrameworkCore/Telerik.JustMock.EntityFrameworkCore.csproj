@@ -11,6 +11,7 @@
     <ProjectGuid>{222C27C4-A982-49BC-AB5C-872EF3F313E2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
+     <JustMockVersion Condition=" '$(JustMockVersion)' == '' ">2024.3.805.336</JustMockVersion>
 
   </PropertyGroup>
 
@@ -24,7 +25,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JustMock" Version="2024.3.805.336" />
+    <PackageReference Include="JustMock" Version="$(JustMockVersion)" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
