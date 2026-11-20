@@ -14,6 +14,10 @@ on:
 jobs:
   build-arm64-and-test:
     runs-on: macos-14
+    permissions:
+      contents: write
+      checks: write # Required by dorny/test-reporter
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3

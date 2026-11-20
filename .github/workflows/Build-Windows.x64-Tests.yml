@@ -17,6 +17,7 @@ jobs:
     permissions:
       contents: write
       checks: write # Required by dorny/test-reporter
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
