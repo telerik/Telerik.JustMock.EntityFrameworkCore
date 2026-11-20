@@ -12,39 +12,36 @@ on:
         default: false
 
 jobs:
-
-   build-x64-and-test:
+  build-x64-and-test:
     runs-on: macos-12
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: recursive
 
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        submodules: recursive
-
-    - name: Build
-      run: |
+      - name: Build
+        run: |
           dotnet build -c Release
-      shell: bash
+        shell: bash
 
-    - name: Run tests
-      if: ${{ !inputs.skip-tests }}
-      run: |
+      - name: Run tests
+        if: ${{ !inputs.skip-tests }}
+        run: |
           dotnet test --no-build --no-restore -c Release -l trx
-      shell: bash
+        shell: bash
 
-    - name: Publish test results
-      uses: dorny/test-reporter@v1
-      if: ${{ (success() || failure()) && !inputs.skip-tests }}
-      with:
+      - name: Publish test results
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2
+        if: ${{ (success() || failure()) && !inputs.skip-tests }}
+        with:
           name: "OSX x64 Tests Release"
           path: ./**/TestResults/*.trx
           reporter: dotnet-trx
 
-    - name: Cleanup test results
-      if: ${{ always() && !inputs.skip-tests }}
-      run: |
+      - name: Cleanup test results
+        if: ${{ always() && !inputs.skip-tests }}
+        run: |
           find . -type f -name '*.trx' -delete
-      shell: bash
-
+        shell: bash
